@@ -1,0 +1,15 @@
+.searchDiv {
+    background-color:#273746;
+    padding: 2em;
+    margin: auto auto;    
+}
+
+.search {
+    border-radius: 5000px ;
+    font-size: 1em;
+    padding: .8em;
+    width: 40%;
+    border: 1px solid grey;
+  }
+  
+  

@@ -1,0 +1,31 @@
+.marketSummary {
+    border: 1px solid grey;
+    box-shadow: 5px 7px 18px -5px rgba(0,0,0,0.57);
+    width: 40%;
+    margin: 1em auto;
+    text-align: left;
+    padding: 0 0 0 .5em;
+}
+
+.subTitle {
+    font-size: 1.5em;
+    color: grey;
+    margin: 0;
+}
+
+.name {
+    font-size: 1.5em;
+    color: grey;
+}
+
+.price {
+    font-size: 1.3em;
+}
+
+.positive {
+    color: green;
+}
+
+.negative {
+    color: red;
+}
