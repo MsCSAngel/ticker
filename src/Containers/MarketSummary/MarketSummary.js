@@ -22,6 +22,9 @@ class MarketSummary extends Component {
             error: false
         };
     
+    clickHandler() {
+        console.log("Following!");
+    }
 
     componentDidMount(){
 
@@ -55,17 +58,27 @@ class MarketSummary extends Component {
             if (this.state.change < 0){
                 change="negative";
             }   
-            
+            let following = "Follow";
+            // TODO:  if being followed already, change text to 'Following'
+
             summary = (
-                <div className="marketSummary">
-                    <p className="subTitle"><span > Market Summary ></span> <span>{this.state.name}</span></p>
-                    <p>{this.state.symbol}</p>
-                    <p><span className="price">{this.state.marketSummary.price}  {this.state.currency}</span> <span className={change}> {this.state.marketSummary.change} ( {this.state.marketSummary.changePercent} )</span></p>
-                    <p>{this.state.marketSummary.lastTradingDay}</p>
+                <div className="flex-container marketSummary">
+                    <div className="marketSummaryTitle">
+                        <p className="subTitle"><span > Market Summary ></span> <span>{this.state.name}</span></p>
+                        <p>{this.state.symbol}</p>
+                        <p><span className="price">{this.state.marketSummary.price}  {this.state.currency}</span> <span className={change}> {this.state.marketSummary.change} ( {this.state.marketSummary.changePercent} )</span></p>
+                        <p>{this.state.marketSummary.lastTradingDay}</p>
+                    </div>
+                    <div>
+                        <button 
+                            className="following"
+                            onClick={this.clickHandler}>{following}
+                            </button>
+                    </div>
+                    
                 </div>
             )
-        }        
-        console.log("return summary: ", summary)        
+        }             
         return summary;
     }
 

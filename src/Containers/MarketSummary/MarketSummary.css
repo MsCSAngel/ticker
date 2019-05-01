@@ -7,10 +7,15 @@
     padding: 0 0 0 .5em;
 }
 
+.marketSummaryTitle {
+    width: 70%;
+    display: inline-block;
+}
+
 .subTitle {
     font-size: 1.5em;
     color: grey;
-    margin: 0;
+    margin: 1em 0 0 0;
 }
 
 .name {
@@ -28,4 +33,20 @@
 
 .negative {
     color: red;
+}
+
+.following {
+    border-radius: 50px;
+    border: 1px solid lightblue;
+    box-sizing: border-box;
+    font-size: 14px;
+    height: 36px;
+    width: 100%;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background-color: transparent;
+    margin:  1em 0 0 3em;
+    min-width: 0;
+    outline: none;
+    cursor: pointer;
 }
