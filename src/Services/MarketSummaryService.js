@@ -1,10 +1,15 @@
 import axios from 'axios';
 
  class MarketSummaryService   {
-
+    /**
+     * get the market summery data for the provided symbol
+     * 
+     * @param symbol - symbol to get summary for
+     * @param updateState - callback function to be called once response is received
+     */
     get = ( symbol, updateState )  => {
 
-        let temp = {
+        let newState = {
             marketSummary: {                
                 high: null,
                 low: null,
@@ -16,19 +21,22 @@ import axios from 'axios';
             error: false
         };
         
-        let url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + symbol + "&interval=5min&apikey=B5G0EY7TG8GPVXDU";        
+        let url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" 
+                        + symbol + "&interval=5min&apikey=B5G0EY7TG8GPVXDU";        
         axios.get( url )
                 .then( response => {                   
-                    console.log ("got a response") ;
-                   temp.marketSummary = this.mapMarketSummaryResponse( response.data );
-                   console.log("temp ", temp);
-                   updateState( temp );
+
+                    if ( response.data["Error Message"] ){
+                        newState.error = true;
+                    }
+                    else {
+                        newState.marketSummary = this.mapMarketSummaryResponse( response.data );
+                    }
+                   updateState( newState );
                 })
                 .catch( error =>{
-                    console.log("got an error");
-                    temp.error = true;
-                   updateState( temp );
-
+                    newState.error = true;
+                    updateState( newState );
                 });                                    
 
     }
@@ -39,6 +47,7 @@ import axios from 'axios';
      * @param {*} data - data recieved from api call
      */
     mapMarketSummaryResponse =( data ) => {
+
         let marketSummary = {};
         let quote = null;
         if ( data["Global Quote"]){

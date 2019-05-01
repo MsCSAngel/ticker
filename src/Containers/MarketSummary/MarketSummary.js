@@ -26,7 +26,7 @@ class MarketSummary extends Component {
     componentDidMount(){
 
         this.marketSummaryService.get( this.props.symbol, ( newState ) => {
-            console.log ("callback called :)");
+
             this.setState({
                 symbol: this.props.symbol,
                 name: this.props.name, 
@@ -35,7 +35,6 @@ class MarketSummary extends Component {
                 error: newState.error
             });
         } );
-        console.log("did update");
                  
     }
 
@@ -50,10 +49,8 @@ class MarketSummary extends Component {
             summary = <p>Uh oh, something went wrong......</p>
         }
         
-        if ( this.state.symbol != null) {
-            console.log("this.state.symbol", this.state.symbol);
+        if ( !this.state.error && this.state.symbol != null) {            
                 
-            //console.log("current", current); 
             let change = "positive";
             if (this.state.change < 0){
                 change="negative";
