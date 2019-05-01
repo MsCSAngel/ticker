@@ -2,9 +2,9 @@ import axios from 'axios';
 
  class MarketSummaryService   {
 
-    get = ( symbol )  => {
+    get = ( symbol, updateState )  => {
 
-        let response = {
+        let temp = {
             marketSummary: {                
                 high: null,
                 low: null,
@@ -18,11 +18,17 @@ import axios from 'axios';
         
         let url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + symbol + "&interval=5min&apikey=B5G0EY7TG8GPVXDU";        
         axios.get( url )
-                .then( response => {                    
-                   this.response.marketSummary = this.mapMarketSummaryResponse( response.data );
+                .then( response => {                   
+                    console.log ("got a response") ;
+                   temp.marketSummary = this.mapMarketSummaryResponse( response.data );
+                   console.log("temp ", temp);
+                   updateState( temp );
                 })
                 .catch( error =>{
-                    this.response.error = true;
+                    console.log("got an error");
+                    temp.error = true;
+                   updateState( temp );
+
                 });                                    
 
     }

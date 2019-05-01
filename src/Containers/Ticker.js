@@ -16,12 +16,17 @@ class Ticker extends Component {
  
     searchHandler = (event) =>{
 
+        console.log("search handler, value length: ", event.target.value.length);
         if ( event.target.value.length > 1 ) {
             let url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + event.target.value +"&apikey=B5G0EY7TG8GPVXDU";            
-            axios.get(url)
-                .then( response=>{                                              
+            axios.get( url )
+                .then( response=>{   
+                    console.log("response: ", response );                                           
                     this.setState({
-                        results: response.data.bestMatches
+                        selectedSymbol: null,
+                        selectedName: null,
+                        results: response.data.bestMatches,
+                        error: false
                     });  
                 })
                 .catch( error =>{
@@ -55,7 +60,7 @@ class Ticker extends Component {
         
         let marketSummary= null;
         
-        if (this.state.selectedSymbol !== null){
+        if ( this.state.selectedSymbol !== null ){
             console.log("this.state.selectedSymbol", this.state.selectedSymbol);
             marketSummary = 
                 <MarketSummary 

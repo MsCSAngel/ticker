@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+import MarketSummaryService from '../../Services/MarketSummaryService';
 
 import './MarketSummary.css';
 
 class MarketSummary extends Component {
-    
-    constructor(props){
-        
-        super(props);
 
-        this.state = {
+    marketSummaryService = new MarketSummaryService();
+
+    state = {
             symbol: null,
             name: null,
             currency: null,
@@ -23,42 +21,21 @@ class MarketSummary extends Component {
             },
             error: false
         };
-    }
+    
 
     componentDidMount(){
 
+        this.marketSummaryService.get( this.props.symbol, ( newState ) => {
+            console.log ("callback called :)");
+            this.setState({
+                symbol: this.props.symbol,
+                name: this.props.name, 
+                currency: this.props.currency ,                   
+                marketSummary: newState.marketSummary,
+                error: newState.error
+            });
+        } );
         console.log("did update");
-
-        let url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + this.props.symbol + "&interval=5min&apikey=B5G0EY7TG8GPVXDU";
-        console.log(url);
-        axios.get( url )
-                .then( response => {
-                    // ugh - get this out of here!  Too dependent on Alpha Vantage api format
-                    let quote = null;
-                    if ( response.data["Global Quote"]){
-                        quote = response.data["Global Quote"];                            
-                        let marketSummary = {
-                            high: quote["03. high"],
-                            low: quote["04. low"],
-                            price: quote["05. price"],                                
-                            change: quote["09. change"],
-                            changePercent: quote["10. change percent"],
-                            lastTradingDay: quote["07. latest trading day"],
-                        }
-                        this.setState({ 
-                            symbol: this.props.symbol,
-                            name: this.props.name, 
-                            currency: this.props.currency ,                   
-                            marketSummary: marketSummary
-                        });
-                    }                   
-                })
-                // note: if the url is wrong, alpha vantage sends back 200 ok with "Error Message:"
-                .catch( error =>{
-                    this.setState({
-                        error: true
-                    });                    
-                });  
                  
     }
 
