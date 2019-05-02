@@ -29,6 +29,9 @@ import axios from 'axios';
                     if ( response.data["Error Message"] ){
                         newState.error = true;
                     }
+                    else if ( response.data["Note"] ){
+                        newState.error = true;
+                    }
                     else {
                         newState.marketSummary = this.mapMarketSummaryResponse( response.data );
                     }

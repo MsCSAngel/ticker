@@ -4,6 +4,7 @@ import Results from '../Components/Results/Results';
 import MarketSummary from './MarketSummary/MarketSummary';
 import Menu from '../Components/Menu/Menu';
 import axios from 'axios';
+import {debounce} from 'lodash';
 
 class Ticker extends Component {
 
@@ -14,18 +15,21 @@ class Ticker extends Component {
         error: false
     }
  
-    searchHandler = (event) =>{
+    searchHandler = debounce( (keyword) =>{
 
-        if ( event.target.value.length > 1 ) {
-            let url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + event.target.value +"&apikey=B5G0EY7TG8GPVXDU";            
+            let url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + keyword +"&apikey=B5G0EY7TG8GPVXDU";            
             axios.get( url )
                 .then( response=>{   
-                                          
+
+                    let error = false;
+                    if ( response.data["Note"] ){
+                        error = true;
+                    }
                     this.setState({
                         selectedSymbol: null,
                         selectedName: null,
                         results: response.data.bestMatches,
-                        error: false
+                        error: error
                     });  
                 })
                 .catch( error =>{
@@ -33,8 +37,8 @@ class Ticker extends Component {
                         error: true
                     });
                 });            
-        }             
-    }
+                    
+    }, 300);
 
     selectResultHandler = (event, symbol, name, currency) => {
 
@@ -73,7 +77,7 @@ class Ticker extends Component {
             <div>
                 <Menu/>
                 <Search
-                    change={ this.searchHandler }></Search>
+                    change={ event=>{this.searchHandler(event.target.value) }}></Search>
                 {results}
                 {marketSummary}
             </div>
