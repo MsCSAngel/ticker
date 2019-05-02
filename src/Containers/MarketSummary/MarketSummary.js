@@ -19,11 +19,16 @@ class MarketSummary extends Component {
                 changePercent: null,
                 lastTradingDay: null
             },
+            following: false,
             error: false
         };
     
-    clickHandler() {
-        console.log("Following!");
+    clickHandler = () => {
+        let following = this.state.following;
+        // toggle the following state;
+        this.setState({
+            following: !following
+        });
     }
 
     componentDidMount(){
@@ -54,24 +59,30 @@ class MarketSummary extends Component {
         
         if ( !this.state.error && this.state.symbol != null) {            
                 
-            let change = "positive";
+            let changeClass = "positive";
             if (this.state.change < 0){
-                change="negative";
+                changeClass = "negative";
             }   
+
+            // set the button text and class
             let following = "Follow";
-            // TODO:  if being followed already, change text to 'Following'
+            let followClass = "follow";
+             if ( this.state.following ){
+                 following = "Following";
+                 followClass = "following";
+             }
 
             summary = (
                 <div className="flex-container marketSummary">
                     <div className="marketSummaryTitle">
                         <p className="subTitle"><span > Market Summary ></span> <span>{this.state.name}</span></p>
                         <p>{this.state.symbol}</p>
-                        <p><span className="price">{this.state.marketSummary.price}  {this.state.currency}</span> <span className={change}> {this.state.marketSummary.change} ( {this.state.marketSummary.changePercent} )</span></p>
+                        <p><span className="price">{this.state.marketSummary.price}  {this.state.currency}</span> <span className={changeClass}> {this.state.marketSummary.change} ( {this.state.marketSummary.changePercent} )</span></p>
                         <p>{this.state.marketSummary.lastTradingDay}</p>
                     </div>
-                    <div>
+                    <div>                        
                         <button 
-                            className="following"
+                            className={followClass}
                             onClick={this.clickHandler}>{following}
                             </button>
                     </div>

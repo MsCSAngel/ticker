@@ -9,7 +9,7 @@ import {debounce} from 'lodash';
 class Ticker extends Component {
 
     state = {
-        results: [],
+        results: null,
         selectedSymbol: null,
         selectedName: null,
         error: false
@@ -17,7 +17,8 @@ class Ticker extends Component {
  
     searchHandler = debounce( (keyword) =>{
 
-            let url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + keyword +"&apikey=B5G0EY7TG8GPVXDU";            
+            let url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + keyword +"&apikey=B5G0EY7TG8GPVXDU"; 
+          
             axios.get( url )
                 .then( response=>{   
 
@@ -38,12 +39,12 @@ class Ticker extends Component {
                     });
                 });            
                     
-    }, 300);
+    }, 500);
 
     selectResultHandler = (event, symbol, name, currency) => {
 
         this.setState({
-            results: [],
+            results: null,
             selectedSymbol: symbol,
             selectedName: name,
             selectedCurrency: currency
@@ -54,7 +55,10 @@ class Ticker extends Component {
     render(){
 
         // TODO: create Results component that returns a list of Result components
-        let results=null;
+        let results = null;
+        if ( this.state.results && this.state.results.length === 0 ){
+            results = <p>No results found.  Try again.</p>
+        }
         if ( this.state.results && this.state.results.length > 0 ){
             results = <Results 
                         list={this.state.results}

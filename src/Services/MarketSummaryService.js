@@ -9,7 +9,7 @@ import axios from 'axios';
      */
     get = ( symbol, updateState )  => {
 
-        let newState = {
+        let marketSummaryResponse = {
             marketSummary: {                
                 high: null,
                 low: null,
@@ -23,23 +23,24 @@ import axios from 'axios';
         
         let url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" 
                         + symbol + "&interval=5min&apikey=B5G0EY7TG8GPVXDU";        
+
         axios.get( url )
                 .then( response => {                   
 
                     if ( response.data["Error Message"] ){
-                        newState.error = true;
+                        marketSummaryResponse.error = true;
                     }
                     else if ( response.data["Note"] ){
-                        newState.error = true;
+                        marketSummaryResponse.error = true;
                     }
                     else {
-                        newState.marketSummary = this.mapMarketSummaryResponse( response.data );
+                        marketSummaryResponse.marketSummary = this.mapMarketSummaryResponse( response.data );
                     }
-                   updateState( newState );
+                   updateState( marketSummaryResponse );
                 })
                 .catch( error =>{
-                    newState.error = true;
-                    updateState( newState );
+                    marketSummaryResponse.error = true;
+                    updateState( marketSummaryResponse );
                 });                                    
 
     }
