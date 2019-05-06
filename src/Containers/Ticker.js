@@ -18,11 +18,13 @@ class Ticker extends Component {
     searchHandler = debounce( (keyword) =>{
 
             let url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + keyword +"&apikey=B5G0EY7TG8GPVXDU"; 
-          
+            
             axios.get( url )
                 .then( response=>{   
 
                     let error = false;
+                    // if we've called the api too many times, we'll get back a 'note' - treat
+                    // it like an error
                     if ( response.data["Note"] ){
                         error = true;
                     }
@@ -38,7 +40,7 @@ class Ticker extends Component {
                         error: true
                     });
                 });            
-                    
+                  
     }, 500);
 
     selectResultHandler = (event, symbol, name, currency) => {
@@ -52,9 +54,8 @@ class Ticker extends Component {
           
     }
    
-    render(){
+    render() {
 
-        // TODO: create Results component that returns a list of Result components
         let results = null;
         if ( this.state.results && this.state.results.length === 0 ){
             results = <p>No results found.  Try again.</p>

@@ -26,10 +26,12 @@ import axios from 'axios';
 
         axios.get( url )
                 .then( response => {                   
-
+                   
                     if ( response.data["Error Message"] ){
                         marketSummaryResponse.error = true;
                     }
+                    // if we've called the api too many times, we'll get back a 'note' - treat
+                    // it like an error
                     else if ( response.data["Note"] ){
                         marketSummaryResponse.error = true;
                     }
